@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/main.css" />
+
+    <title>Story App</title>
+  </head>
+  <body>
+    <!-- Navbar Component -->
+    <nav-bar></nav-bar>
+
+    <!-- Main Content -->
+    <main id="mainContent" class="container-fluid mt-5 pt-4">
+      <!-- Home Page -->
+      <section id="homePage" class="page">
+        <div class="container">
+          <div class="row mb-4">
+            <div class="col">
+              <h2 class="text-center">Latest Stories</h2>
+            </div>
+          </div>
+          <story-list id="storyList"></story-list>
+        </div>
+      </section>
+
+      <!-- Add Story Page -->
+      <section id="storyForm" class="page" style="display: none">
+        <story-form></story-form>
+      </section>
+
+      <!-- Developer Profile Page -->
+      <section id="profilePage" class="page" style="display: none">
+        <developer-profile></developer-profile>
+      </section>
+
+      <!-- Login Page -->
+      <section id="loginPage" class="page" style="display: none">
+        <login-form></login-form>
+      </section>
+
+      <!-- Register Page -->
+      <section id="registerPage" class="page" style="display: none">
+        <register-form></register-form>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Your App's JavaScript -->
+    <script src="js/app.js" type="module"></script>
+  </body>
+</html>

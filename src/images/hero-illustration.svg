@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2A9D8F" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#264653" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4A261" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#E76F51" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Shapes -->
+  <circle cx="650" cy="150" r="120" fill="url(#gradient1)" opacity="0.2"/>
+  <circle cx="200" cy="500" r="150" fill="url(#gradient2)" opacity="0.2"/>
+  
+  <!-- Story Cards -->
+  <rect x="100" y="200" width="220" height="260" rx="12" fill="white" stroke="#e0e0e0" stroke-width="2"/>
+  <rect x="120" y="220" width="180" height="140" rx="8" fill="#f0f0f0"/>
+  <rect x="120" y="380" width="180" height="20" rx="4" fill="#d0d0d0"/>
+  <rect x="120" y="410" width="140" height="10" rx="2" fill="#e0e0e0"/>
+  <rect x="120" y="430" width="160" height="10" rx="2" fill="#e0e0e0"/>
+  
+  <rect x="350" y="150" width="220" height="260" rx="12" fill="white" stroke="#e0e0e0" stroke-width="2"/>
+  <rect x="370" y="170" width="180" height="140" rx="8" fill="#f0f0f0"/>
+  <rect x="370" y="330" width="180" height="20" rx="4" fill="#d0d0d0"/>
+  <rect x="370" y="360" width="140" height="10" rx="2" fill="#e0e0e0"/>
+  <rect x="370" y="380" width="160" height="10" rx="2" fill="#e0e0e0"/>
+  
+  <rect x="500" y="250" width="220" height="260" rx="12" fill="white" stroke="#e0e0e0" stroke-width="2"/>
+  <rect x="520" y="270" width="180" height="140" rx="8" fill="#f0f0f0"/>
+  <rect x="520" y="430" width="180" height="20" rx="4" fill="#d0d0d0"/>
+  <rect x="520" y="460" width="140" height="10" rx="2" fill="#e0e0e0"/>
+  <rect x="520" y="480" width="160" height="10" rx="2" fill="#e0e0e0"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="140" cy="310" r="15" fill="#2A9D8F"/>
+  <circle cx="390" cy="260" r="15" fill="#E76F51"/>
+  <circle cx="540" cy="340" r="15" fill="#2A9D8F"/>
+  
+  <!-- Lines connecting stories -->
+  <path d="M160 310 C250 280, 350 260, 390 260" stroke="#2A9D8F" stroke-width="2" fill="none"/>
+  <path d="M405 260 C450 290, 500 320, 540 340" stroke="#E76F51" stroke-width="2" fill="none"/>
+</svg>

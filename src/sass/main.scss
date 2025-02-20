@@ -1,0 +1,227 @@
+// File: src/sass/main.scss
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
+
+// Import Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Global Styles
+body {
+  font-family: $font-primary;
+  color: $text-primary;
+  background-color: $background-color;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+// Typography
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.display-4 {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+// Navigation Bar
+.navbar {
+  transition: $transition-default;
+  backdrop-filter: blur(10px);
+  background-color: rgba($primary-color, 0.95) !important;
+  height: $navbar-height;
+
+  &-brand {
+    color: $light-color !important;
+    font-family: $font-primary;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+
+    &:hover {
+      color: white !important;
+    }
+  }
+
+  .nav-link {
+    color: rgba($light-color, 0.85) !important;
+    font-weight: 500;
+    transition: $transition-default;
+
+    &:hover,
+    &.active {
+      color: white !important;
+    }
+  }
+}
+
+// Navbar Collapse
+.navbar-collapse {
+  @media (max-width: 991px) {
+    background-color: rgba($primary-color, 0.98);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    position: relative; // Untuk positioning tombol close
+  }
+}
+
+// Styling untuk tombol close
+.navbar-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: $light-color;
+  font-size: 1.5rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none; // Hidden by default
+
+  @media (max-width: 991px) {
+    display: block; // Only show in mobile
+  }
+
+  &:hover {
+    color: white;
+    transform: rotate(90deg);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  .bi-x-lg {
+    display: block;
+    line-height: 1;
+  }
+}
+
+// Button Styles
+.btn {
+  border-radius: $button-border-radius;
+  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  transition: $transition-default;
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  border-color: $primary-color;
+
+  &:hover,
+  &:focus {
+    background-color: darken($primary-color, 10%);
+    border-color: darken($primary-color, 10%);
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.25);
+    transform: translateY(-2px);
+  }
+}
+
+.btn-gradient {
+  @include button-gradient;
+}
+
+// Form styles
+.form-control {
+  border-radius: calc($card-border-radius - 4px);
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  transition: $transition-default;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+    border-color: $primary-color;
+  }
+}
+
+// Hero Section
+.hero-section {
+  padding: 5rem 0 3rem;
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($dark-color, 0.1) 100%);
+  border-radius: 0 0 $card-border-radius $card-border-radius;
+  margin-bottom: 3rem;
+
+  h1 {
+    font-weight: 800;
+  }
+
+  .text-gradient {
+    @include gradient-text;
+  }
+}
+
+// Story Card Styling
+.story-card {
+  @include card-shadow;
+  border-radius: $card-border-radius;
+  margin-bottom: 1.5rem;
+  border: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    transition: $transition-default;
+  }
+
+  &:hover .story-card__image {
+    transform: scale(1.05);
+  }
+
+  &__content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Footer Styles
+.footer {
+  background-color: $primary-color;
+  padding: 2rem 0;
+  margin-top: 5rem;
+
+  &__content {
+    color: rgba($light-color, 0.8);
+    margin-bottom: 0;
+    text-align: center;
+    font-family: $font-primary;
+
+    a {
+      color: $secondary-color;
+      text-decoration: none;
+      transition: $transition-default;
+
+      &:hover {
+        color: lighten($secondary-color, 10%);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Animations & Utilities
+.fade-in {
+  @include fadeIn;
+}
+
+.skeleton-loader {
+  @include skeleton-loading;
+}
+
+.text-gradient {
+  @include gradient-text;
+}

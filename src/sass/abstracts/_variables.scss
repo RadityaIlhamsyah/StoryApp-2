@@ -1,0 +1,28 @@
+// File: src/sass/abstracts/_variables.scss
+// Colors - Updated to a modern palette
+$primary-color: #2a9d8f;
+$secondary-color: #e76f51;
+$dark-color: #264653;
+$light-color: #f8f9fa;
+$background-color: #ffffff;
+$text-primary: #333333;
+$text-secondary: #6c757d;
+
+// Typography
+$font-primary: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-secondary: 'Open Sans', sans-serif;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Layout
+$container-padding: 1.25rem;
+$card-border-radius: 12px;
+$button-border-radius: 8px;
+$navbar-height: 4.5rem;
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 8px 16px rgba(0, 0, 0, 0.12);
+$transition-default: all 0.3s ease;
