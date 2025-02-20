@@ -5,52 +5,141 @@ export class NavBar extends LitElement {
   static properties = {
     isLoggedIn: { type: Boolean },
     userName: { type: String },
+    isDropdownOpen: { type: Boolean },
+    isNavbarCollapsed: { type: Boolean },
   };
 
   constructor() {
     super();
     this.isLoggedIn = authService.isLoggedIn();
     this.userName = authService.getUserName() || '';
+    this.isDropdownOpen = false;
+    this.isNavbarCollapsed = false;
   }
 
+  // Prevent shadow DOM creation
   createRenderRoot() {
     return this;
   }
 
-  firstUpdated() {
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('resize', this._handleResize.bind(this));
+
+    // Check auth state when component is connected
+    this.updateAuthState();
+
+    // Wait for DOM to be fully ready
+    setTimeout(() => this._initializeBootstrapComponents(), 100);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('resize', this._handleResize.bind(this));
+    this._cleanupBootstrapInstances();
+  }
+
+  _cleanupBootstrapInstances() {
     if (window.bootstrap) {
-      const dropdownElementList = this.querySelectorAll('.dropdown-toggle');
-      dropdownElementList.forEach((dropdown) => {
-        new bootstrap.Dropdown(dropdown);
+      const dropdownToggles = this.querySelectorAll('.dropdown-toggle');
+      dropdownToggles.forEach((toggle) => {
+        const instance = bootstrap.Dropdown.getInstance(toggle);
+        if (instance) instance.dispose();
       });
 
       const navbarCollapse = this.querySelector('.navbar-collapse');
-      const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
+      if (navbarCollapse) {
+        const instance = bootstrap.Collapse.getInstance(navbarCollapse);
+        if (instance) instance.dispose();
+      }
+    }
+  }
 
-      // Event listener untuk tombol close
-      const closeButton = this.querySelector('.navbar-close');
-      closeButton.addEventListener('click', () => {
-        bsCollapse.hide();
+  _handleResize() {
+    if (window.innerWidth >= 992 && this.isNavbarCollapsed) {
+      const navbarCollapse = this.querySelector('.navbar-collapse');
+      if (navbarCollapse) {
+        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+        if (bsCollapse) {
+          bsCollapse.hide();
+        }
+      }
+      this.isNavbarCollapsed = false;
+    }
+  }
+
+  updated(changedProperties) {
+    super.updated(changedProperties);
+
+    // Re-initialize Bootstrap components after DOM is updated
+    if (changedProperties.has('isLoggedIn')) {
+      setTimeout(() => this._initializeBootstrapComponents(), 100);
+    }
+  }
+
+  firstUpdated() {
+    // Initialize Bootstrap components
+    setTimeout(() => this._initializeBootstrapComponents(), 100);
+  }
+
+  _initializeBootstrapComponents() {
+    if (!window.bootstrap) {
+      console.error('Bootstrap is not loaded');
+      return;
+    }
+
+    // Clean up first to prevent duplicate instances
+    this._cleanupBootstrapInstances();
+
+    // Initialize dropdowns
+    const dropdownToggles = this.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach((dropdownToggle) => {
+      new bootstrap.Dropdown(dropdownToggle, {
+        autoClose: true,
       });
 
-      const navLinks = this.querySelectorAll('.nav-link:not(.dropdown-toggle)');
-      navLinks.forEach((link) => {
-        link.addEventListener('click', () => {
-          if (window.innerWidth < 992) {
-            bsCollapse.hide();
-          }
-        });
+      // Manually add click handler to ensure dropdown toggle works
+      dropdownToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const dropdown = bootstrap.Dropdown.getInstance(dropdownToggle);
+        if (dropdown) {
+          dropdown.toggle();
+        }
       });
+    });
 
-      const dropdownItems = this.querySelectorAll('.dropdown-item');
-      dropdownItems.forEach((item) => {
-        item.addEventListener('click', () => {
-          if (window.innerWidth < 992) {
-            bsCollapse.hide();
-          }
-        });
+    // Initialize collapse
+    const navbarCollapse = this.querySelector('.navbar-collapse');
+    if (navbarCollapse) {
+      new bootstrap.Collapse(navbarCollapse, {
+        toggle: false,
       });
     }
+
+    // Event listeners for navbar close button
+    const closeButton = this.querySelector('.navbar-close');
+    if (closeButton) {
+      closeButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const navbarCollapse = this.querySelector('.navbar-collapse');
+        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+        if (bsCollapse) {
+          bsCollapse.hide();
+        }
+      });
+    }
+  }
+
+  _handleLogout(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Perform logout
+    authService.logout();
+    this.isLoggedIn = false;
+    this.userName = '';
+    window.location.hash = '#/login';
   }
 
   render() {
@@ -64,7 +153,6 @@ export class NavBar extends LitElement {
           </button>
 
           <div class="collapse navbar-collapse" id="navbarContent">
-            <!-- Tombol close untuk mobile -->
             <button class="navbar-close d-lg-none" type="button" aria-label="Close menu">
               <i class="bi bi-x-lg"></i>
             </button>
@@ -82,11 +170,9 @@ export class NavBar extends LitElement {
                       <a class="nav-link" href="#/profile">About Developer</a>
                     </li>
                     <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Welcome, ${this.userName} </a>
+                      <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, ${this.userName}</button>
                       <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                          <a class="dropdown-item" href="#" @click=${this._handleLogout}> Logout </a>
-                        </li>
+                        <li><a class="dropdown-item" href="#" @click=${this._handleLogout}>Logout</a></li>
                       </ul>
                     </li>
                   `
@@ -105,23 +191,9 @@ export class NavBar extends LitElement {
     `;
   }
 
-  _handleLogout(e) {
-    e.preventDefault();
-    if (window.innerWidth < 992) {
-      const navbarCollapse = this.querySelector('.navbar-collapse');
-      const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
-      if (bsCollapse) {
-        bsCollapse.hide();
-      }
-    }
-
-    authService.logout();
-    this.isLoggedIn = false;
-    this.userName = '';
-    window.location.hash = '#/login';
-  }
-
+  // Public method to update auth state
   updateAuthState() {
+    const wasLoggedIn = this.isLoggedIn;
     this.isLoggedIn = authService.isLoggedIn();
     this.userName = authService.getUserName() || '';
   }
